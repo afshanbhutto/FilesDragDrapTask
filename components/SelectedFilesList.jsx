@@ -6,6 +6,7 @@ import {
     getFacebookUrl,
     getTwitterUrl,
 } from "@phntms/react-share";
+import { FacebookProvider, ShareButton } from 'react-facebook';
 import { IoChatbubblesOutline } from "react-icons/io5";
 import { BsQrCode } from "react-icons/bs";
 import { FaWhatsapp, FaTwitter } from "react-icons/fa";
@@ -108,15 +109,26 @@ const SelectedFilesList = ({ selectedFiles }) => {
     };
 
     const url = "https://example.com";
-    const title = "Check out this awesome website!";
+    const title = "Check out this!";
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
     const handleClickForMessage = () => {
-        const messageBody = `Check out this link: ${url}`;
+        const messageBody = `Check out this! ${url}`;
 
         const smsUri = `sms:?body=${encodeURIComponent(messageBody)}`;
         window.location.href = smsUri;
     };
 
+    const handleClickForTwitter = () => {
+        const shareableUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
+            url
+        )}&text=${encodeURIComponent(title)}`;
+        if (isMobile) {
+            window.location.href = shareableUrl;
+        } else {
+            window.open(shareableUrl, "_blank");
+        }
+    };
     // Reset visibility when selected files change
     useEffect(() => {
         setShowFacebookShare(false);
@@ -276,12 +288,11 @@ const SelectedFilesList = ({ selectedFiles }) => {
                         <button className="flex gap-4 items-center px-2 py-2 bg-black flex-col">
                             <div id="icon">
                                 <FaWhatsapp
-                                    size={30}
+                                    size={40}
                                     round
                                     className="text-white bg-[#25D366] p-1 rounded-full"
                                 />
                             </div>
-                            <p>Share on WhatsApp</p>
                         </button>
                     </a>
                 </div>
@@ -294,16 +305,15 @@ const SelectedFilesList = ({ selectedFiles }) => {
                         onClick={handleClickForMessage}
                     >
                         <div id="icon">
-                            <IoChatbubblesOutline size={32} round />
+                            <IoChatbubblesOutline size={40} round />
                         </div>
-                        <button onClick={handleClickForMessage}>Share on Message</button>
                     </button>
                 </div>
             )}
 
             {showFacebookShare && (
                 <div className="bg-black flex flex-col items-center justify-center rounded-md w-full  md:w-[300px] min-h-[300px] text-white ml-2 pt-2 md:pt-0">
-                    <a href={getFacebookUrl({ url })} target="_blank">
+                    {/* <a href={getFacebookUrl({ url })} target="_blank">
                         <button className="flex gap-4 items-center px-2 py-2 bg-black flex-col">
                             <div id="icon">
                                 <GrFacebookOption
@@ -314,24 +324,35 @@ const SelectedFilesList = ({ selectedFiles }) => {
                             </div>
                             <p>Share on Facebook</p>
                         </button>
-                    </a>
+                    </a> */}
+
+                    <FacebookProvider appId="1190324285693752">
+                        <ShareButton href={url} target="_blank">
+                            <GrFacebookOption
+                                size={40}
+                                round
+                                className="text-white bg-[#4267B2] p-1.5 rounded-full"
+                            />
+                        </ShareButton>
+                    </FacebookProvider>
                 </div>
             )}
 
             {showTwitter && (
-                <div className="bg-black flex flex-col items-center w-full justify-center rounded-md md:w-[300px] min-h-[300px] text-white ml-2 pt-2 md:pt-0">
-                    <a href={getTwitterUrl({ url })} target="_blank">
-                        <button className="flex gap-4 items-center px-2 py-2 bg-black flex-col">
-                            <div id="icon">
-                                <FaTwitter
-                                    size={30}
-                                    round
-                                    className="text-white bg-[#1DA1F2] p-1.5 rounded-full"
-                                />
-                            </div>
-                            <p>Share on Twitter</p>
-                        </button>
-                    </a>
+                <div className="bg-black flex flex-col items-center justify-center rounded-md w-full  md:w-[300px] min-h-[300px] text-white ml-2 pt-2 md:pt-0">
+
+                    <button
+                        className="flex gap-4 items-center px-2 py-2 bg-black flex-col"
+                        onClick={handleClickForTwitter}
+                    >
+                        <div id="icon">
+                            <FaTwitter
+                                size={40}
+                                round
+                                className="text-white bg-[#1DA1F2] p-1.5 rounded-full"
+                            />
+                        </div>
+                    </button>
                 </div>
             )}
         </div>

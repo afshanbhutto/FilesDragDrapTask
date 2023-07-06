@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+
 import { addFile } from '../redux/filesSlice';
 import SelectedFilesList from "./SelectedFilesList"
 
@@ -108,6 +109,7 @@ const DragDropScreen = ({ children }) => {
                     {children}
 
                 </div>
+
 
             </div>
 
