@@ -123,11 +123,7 @@ const SelectedFilesList = ({ selectedFiles }) => {
         const shareableUrl = `https://twitter.com/intent/tweet?url=${encodeURIComponent(
             url
         )}&text=${encodeURIComponent(title)}`;
-        if (isMobile) {
-            window.location.href = shareableUrl;
-        } else {
-            window.open(shareableUrl, "_blank");
-        }
+        window.open(shareableUrl, "_blank")
     };
     // Reset visibility when selected files change
     useEffect(() => {
